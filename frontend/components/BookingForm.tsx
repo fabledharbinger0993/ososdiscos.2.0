@@ -7,10 +7,10 @@ const BOOKING_EMAIL = "booking@ososdiscos.com"
 const inputStyle: CSSProperties = {
   width: "100%",
   padding: "12px 16px",
-  background: "#1a1a1a",
-  border: "1px solid #2e2e2e",
-  borderRadius: "18px",
-  color: "#fff",
+  background: "var(--color-bg-card, #111)",
+  border: "1px solid var(--color-border, #1e1e1e)",
+  borderRadius: 4,
+  color: "var(--color-text, #e8e8e8)",
   fontSize: "14px",
   outline: "none",
   boxSizing: "border-box",
@@ -18,7 +18,7 @@ const inputStyle: CSSProperties = {
 
 const labelStyle: CSSProperties = {
   display: "block",
-  color: "#ccc",
+  color: "var(--color-text-muted, #a89060)",
   fontSize: "13px",
   marginBottom: "6px",
   fontWeight: 500,
@@ -36,18 +36,18 @@ const optionalTag: CSSProperties = {
 const sectionDivider: CSSProperties = {
   marginTop: "32px",
   paddingTop: "32px",
-  borderTop: "1px solid #2e2e2e",
+  borderTop: "1px solid var(--color-border, #1e1e1e)",
 }
 
-const infoBox = (color = "#1a1a1a"): CSSProperties => ({
+const infoBox = (color = "var(--color-bg-card, #111)"): CSSProperties => ({
   background: color,
-  border: "1px solid #2e2e2e",
-  borderRadius: "18px",
+  border: "1px solid var(--color-border, #1e1e1e)",
+  borderRadius: 4,
   padding: "20px 24px",
   marginBottom: "24px",
   fontSize: "13px",
   lineHeight: "1.6",
-  color: "#aaa",
+  color: "var(--color-text-muted, #a89060)",
 })
 
 // ── day / time toggles ───────────────────────────────────────────────────────
@@ -79,9 +79,9 @@ function CheckGroup({
             style={{
               padding: "6px 16px",
               borderRadius: "18px",
-              border: `1px solid ${active ? "#ff2d95" : "#2e2e2e"}`,
-              background: active ? "#ff2d95" : "#1a1a1a",
-              color: active ? "#fff" : "#888",
+              border: `1px solid ${active ? "var(--color-magenta, #cc2478)" : "var(--color-border, #1e1e1e)"}`,
+              background: active ? "var(--color-magenta, #cc2478)" : "var(--color-bg-card, #111)",
+              color: active ? "#fff" : "var(--color-text-muted, #a89060)",
               fontSize: "13px",
               cursor: "pointer",
             }}
@@ -117,18 +117,18 @@ function PathCard({
         flex: 1,
         minWidth: "220px",
         padding: "24px",
-        background: active ? "#1a0010" : "#111",
-        border: `2px solid ${active ? "#ff2d95" : "#2e2e2e"}`,
+        background: active ? "#0d0008" : "var(--color-bg-card, #111)",
+        border: `2px solid ${active ? "var(--color-magenta, #cc2478)" : "var(--color-border, #1e1e1e)"}`,
         borderRadius: "18px",
         color: "#fff",
         textAlign: "left",
         cursor: "pointer",
       }}
     >
-      <div style={{ color: active ? "#ff2d95" : "#fff", fontWeight: 700, marginBottom: "8px", fontSize: "15px" }}>
+      <div style={{ color: active ? "var(--color-magenta, #cc2478)" : "var(--color-text, #e8e8e8)", fontWeight: 700, marginBottom: "8px", fontSize: "15px" }}>
         {title}
       </div>
-      <div style={{ color: "#888", fontSize: "13px", lineHeight: "1.5" }}>{description}</div>
+      <div style={{ color: "var(--color-text-muted, #a89060)", fontSize: "13px", lineHeight: "1.5" }}>{description}</div>
     </button>
   )
 }
@@ -248,14 +248,25 @@ export default function BookingForm() {
       style={{
         maxWidth: "680px",
         margin: "0 auto",
-        background: "#111",
-        border: "1px solid #1e1e1e",
-        borderRadius: "18px",
-        padding: "40px",
+        background: "var(--color-bg-card, #111)",
+        border: "1px solid var(--color-border, #1e1e1e)",
+        borderRadius: 8,
+        padding: "clamp(24px, 5vw, 40px)",
       }}
     >
-      <h2 style={{ color: "#ff2d95", fontSize: "28px", marginBottom: "8px" }}>Booking Request</h2>
-      <p style={{ color: "#666", fontSize: "14px", marginBottom: "32px" }}>
+      <h2
+        style={{
+          fontFamily: "var(--font-display, 'Bebas Neue', sans-serif)",
+          color: "var(--color-magenta, #cc2478)",
+          fontSize: "clamp(1.6rem, 4vw, 1.9rem)",
+          letterSpacing: "0.06em",
+          marginBottom: 8,
+          textShadow: "0 0 16px rgba(204,36,120,0.4)",
+        }}
+      >
+        Booking Request
+      </h2>
+      <p style={{ color: "var(--color-text-muted, #a89060)", fontSize: "14px", marginBottom: "32px" }}>
         Select a booking type below to get started. Every booking includes a complimentary consult
         call before we confirm your date.
       </p>
@@ -363,10 +374,10 @@ export default function BookingForm() {
 
           {/* ── Consult scheduling ── */}
           <div style={sectionDivider}>
-            <h3 style={{ color: "#ff2d95", fontSize: "17px", marginBottom: "6px" }}>
+            <h3 style={{ fontFamily: "var(--font-display, 'Bebas Neue', sans-serif)", color: "var(--color-magenta, #cc2478)", letterSpacing: "0.06em", fontSize: "1.2rem", marginBottom: "6px" }}>
               Consult Call Availability
             </h3>
-            <p style={{ color: "#666", fontSize: "13px", marginBottom: "24px" }}>
+            <p style={{ color: "var(--color-text-muted, #a89060)", fontSize: "13px", marginBottom: "24px" }}>
               Every booking begins with a consult call. Let us know when you're generally available
               and we'll reach out to confirm a time.
             </p>
@@ -408,12 +419,12 @@ export default function BookingForm() {
           {/* ── Wedding section ── */}
           {isWedding && (
             <div style={sectionDivider}>
-              <h3 style={{ color: "#ff2d95", fontSize: "17px", marginBottom: "16px" }}>
+              <h3 style={{ fontFamily: "var(--font-display, 'Bebas Neue', sans-serif)", color: "var(--color-magenta, #cc2478)", letterSpacing: "0.06em", fontSize: "1.2rem", marginBottom: "16px" }}>
                 Wedding Details
               </h3>
 
               <div style={infoBox("#0d0008")}>
-                <span style={{ color: "#ff2d95", fontWeight: 600 }}>Heads up:</span> Playlist links
+                <span style={{ color: "var(--color-magenta, #cc2478)", fontWeight: 600 }}>Heads up:</span> Playlist links
                 are required for your wedding but don't need to be submitted right now. We'll go
                 over everything during your consult call. You can send them to{" "}
                 <span style={{ color: "#ccc" }}>{BOOKING_EMAIL}</span> any time before your event
@@ -444,7 +455,7 @@ export default function BookingForm() {
               <div
                 style={{
                   background: "#0a0a0a",
-                  border: "1px solid #2e2e2e",
+                  border: "1px solid var(--color-border, #1e1e1e)",
                   borderRadius: "18px",
                   padding: "24px",
                   marginBottom: "20px",
@@ -492,14 +503,16 @@ export default function BookingForm() {
               type="submit"
               style={{
                 width: "100%",
-                padding: "14px",
-                background: "#ff2d95",
+                padding: "16px",
+                background: "var(--color-magenta, #cc2478)",
                 color: "#fff",
                 border: "none",
-                borderRadius: "18px",
-                fontSize: "16px",
-                fontWeight: 600,
+                borderRadius: 4,
+                fontSize: "1rem",
+                fontFamily: "var(--font-display, 'Bebas Neue', sans-serif)",
+                letterSpacing: "0.1em",
                 cursor: "pointer",
+                minHeight: 48,
               }}
             >
               Send Booking Request
