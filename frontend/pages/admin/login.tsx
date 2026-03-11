@@ -1,7 +1,7 @@
 import { useState, FormEvent } from "react"
 import axios from "axios"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://ososdiscoscom-production.up.railway.app"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
 const inputStyle = {
   width: "100%",

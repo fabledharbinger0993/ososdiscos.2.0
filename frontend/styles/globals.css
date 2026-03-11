@@ -1,0 +1,126 @@
+/* ── CSS custom property defaults (overridden by useTheme at runtime) ─────── */
+:root {
+  --color-bg:        #0a0a0a;
+  --color-bgDark:    #000000;
+  --color-bgCard:    #111111;
+  --color-border:    #1e1e1e;
+  --color-text:      #e8e8e8;
+  --color-textMuted: #a89060;
+  --color-gold:      #d4af37;
+  --color-magenta:   #cc2478;
+  --color-teal:      #00c6a2;
+  --color-glowGold:  rgba(212,175,55,0.25);
+  --color-glowPink:  rgba(204,36,120,0.25);
+  --font-display:    'Bebas Neue', 'Arial Narrow', sans-serif;
+  --font-body:       'Inter', 'Helvetica Neue', sans-serif;
+  --font-accent:     'Playfair Display', Georgia, serif;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--color-bg);
+  color:      var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, video { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Bead divider (section separator) ───────────────────────────────────── */
+.bead-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 0;
+  justify-content: center;
+}
+.bead-divider::before,
+.bead-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-gold) 0px,
+    var(--color-gold) 4px,
+    transparent 4px,
+    transparent 12px
+  );
+  opacity: 0.5;
+}
+.bead-divider span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  box-shadow: 0 0 8px var(--color-glowGold);
+}
+
+/* ── Marquee bullet border utility ──────────────────────────────────────── */
+.marquee-border {
+  position: relative;
+  border: 2px solid var(--color-gold);
+  border-radius: 4px;
+}
+.marquee-border::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border: 2px solid transparent;
+  background: radial-gradient(circle, var(--color-gold) 2px, transparent 2px) 0 0 / 14px 14px;
+  pointer-events: none;
+}
+
+/* ── Neon glow text utility ──────────────────────────────────────────────── */
+.neon-gold {
+  text-shadow:
+    0 0 6px  var(--color-glowGold),
+    0 0 20px var(--color-glowGold),
+    0 0 40px var(--color-glowGold);
+}
+.neon-pink {
+  text-shadow:
+    0 0 6px  var(--color-glowPink),
+    0 0 20px var(--color-glowPink);
+}
+
+/* ── Glass card utility ──────────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(17, 17, 17, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+/* ── Responsive helpers ──────────────────────────────────────────────────── */
+.hide-mobile  { display: block; }
+.show-mobile  { display: none; }
+
+@media (max-width: 768px) {
+  .hide-mobile { display: none; }
+  .show-mobile { display: block; }
+}
+
+/* ── Disco light scatter animation ──────────────────────────────────────── */
+@keyframes scatter {
+  0%   { transform: translate(0, 0) scale(1);   opacity: 0.8; }
+  50%  { transform: translate(6px, -4px) scale(1.3); opacity: 0.4; }
+  100% { transform: translate(-4px, 6px) scale(0.8); opacity: 0.8; }
+}
+
+@keyframes spin {
+  from { transform: rotateY(0deg) rotate(0deg); }
+  to   { transform: rotateY(360deg) rotate(360deg); }
+}
+
+@keyframes bulb-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
