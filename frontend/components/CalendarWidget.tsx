@@ -101,7 +101,7 @@ export default function CalendarWidget({ onSubmit }: { onSubmit?: (days: Selecte
           <li key={idx} style={{ color: THEME.colors.textMuted, marginBottom: "6px" }}>
             {day.date} ({day.start}–{day.end})
             {day.notes && (
-              <span style={{ color: "var(--color-teal)"Dark }}> — {day.notes}</span>
+              <span style={{ color: "var(--color-magenta, #cc2478)" }}> — {day.notes}</span>
             )}
             <button
               onClick={() => removeDay(idx)}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, CSSProperties } from "react"
 import DiscoBall from "./DiscoBall"
 
 export default function HeroCarousel() {
@@ -240,7 +240,7 @@ interface BulletRowProps {
 function BulletRow({ count, top, bottom, left, right, horizontal, vertical }: BulletRowProps) {
   const bulbs = Array.from({ length: count })
 
-  const containerStyle: React.CSSProperties = {
+  const containerStyle: CSSProperties = {
     position: "absolute",
     display: "flex",
     pointerEvents: "none",
