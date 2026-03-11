@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.0",
     "@vercel/speed-insights": "^2.0.0",
     "axios": "^1.13.6",
     "next": "^15.5.12",
