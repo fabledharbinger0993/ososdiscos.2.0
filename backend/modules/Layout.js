@@ -1,7 +1,6 @@
 import express from "express"
 import Layout from "../models/Layout.js"
 import auth from "../middleware/auth.js"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 const router = express.Router()
 
 // FIX: default sections now match frontend DEFAULT_LAYOUT exactly (was missing

@@ -41,6 +41,7 @@ app.use("/api/theme",      themeRouter)
 app.use("/api/bio",        bioRouter)
 app.use("/api/layout",     layoutRouter)
 app.use("/api/media",      mediaRouter)
+app.get("/api/health", (req, res) => res.status(200).json({ status: "ok" }))
 
 // ── 404 + error handlers ──────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: "Not found" }))
@@ -60,7 +61,7 @@ mongoose.connect(process.env.MONGO_URI, {
   socketTimeoutMS:      45000,
 }).then(() => {
   console.log("MongoDB connected")
-  app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
+  app.listen(PORT, "0.0.0.0", () => console.log(`Backend running on port ${PORT}`))
 }).catch(err => {
   console.error("MongoDB connection failed:", err.message)
   process.exit(1)
