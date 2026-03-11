@@ -27,7 +27,7 @@ export default function EventFlyers() {
 
   return (
     <section style={{ padding: "60px 40px", background: THEME.colors.bg, color: THEME.colors.text }}>
-      <h2 style={{ color: THEME.colors.accent, fontSize: "36px", marginBottom: "24px" }}>
+      <h2 style={{ color: "var(--color-teal)", fontSize: "36px", marginBottom: "24px" }}>
         Upcoming Gigs
       </h2>
 
@@ -51,7 +51,7 @@ export default function EventFlyers() {
           }}
         >
           <h3 style={{ margin: "0 0 8px 0", fontSize: "20px" }}>{event.title}</h3>
-          <p style={{ margin: "0 0 4px 0", color: THEME.colors.accent, fontSize: "14px" }}>
+          <p style={{ margin: "0 0 4px 0", color: "var(--color-teal)", fontSize: "14px" }}>
             {event.date}
           </p>
           <p style={{ margin: 0, color: THEME.colors.textMuted, fontSize: "13px" }}>
@@ -106,7 +106,7 @@ export default function EventFlyers() {
           <button
             onClick={() => setAutoPlay(!autoPlay)}
             style={{
-              background: autoPlay ? THEME.colors.accent : "rgba(0,0,0,0.6)",
+              background: autoPlay ? "var(--color-teal)" : "rgba(0,0,0,0.6)",
               border: "none",
               color: "#fff",
               padding: "8px 12px",

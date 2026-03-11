@@ -27,7 +27,7 @@ export default function PictureCarousel() {
 
   return (
     <section style={{ padding: "60px 40px", background: THEME.colors.bg, color: THEME.colors.text }}>
-      <h2 style={{ color: THEME.colors.accent, fontSize: "36px", marginBottom: "24px" }}>
+      <h2 style={{ color: "var(--color-teal)", fontSize: "36px", marginBottom: "24px" }}>
         Gallery
       </h2>
 
@@ -86,7 +86,7 @@ export default function PictureCarousel() {
           <button
             onClick={() => setAutoPlay(!autoPlay)}
             style={{
-              background: autoPlay ? THEME.colors.accent : "rgba(0,0,0,0.6)",
+              background: autoPlay ? "var(--color-teal)" : "rgba(0,0,0,0.6)",
               border: "none",
               color: "#fff",
               padding: "8px 16px",

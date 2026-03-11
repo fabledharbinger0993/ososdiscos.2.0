@@ -41,7 +41,7 @@ export default function CalendarWidget({ onSubmit }: { onSubmit?: (days: Selecte
   return (
     <div style={cardStyle({ marginBottom: "32px" })}>
       {/* FIX: removed spurious `background` that was on the h3 in the second commit */}
-      <h3 style={{ color: THEME.colors.accent, fontSize: "18px", marginBottom: "12px" }}>
+      <h3 style={{ color: "var(--color-teal)", fontSize: "18px", marginBottom: "12px" }}>
         Select Event Dates
       </h3>
 
@@ -70,7 +70,7 @@ export default function CalendarWidget({ onSubmit }: { onSubmit?: (days: Selecte
         <button
           onClick={addDay}
           style={{
-            background: THEME.colors.accent,
+            background: "var(--color-teal)",
             color: "#fff",
             border: "none",
             borderRadius: "8px",
@@ -101,13 +101,13 @@ export default function CalendarWidget({ onSubmit }: { onSubmit?: (days: Selecte
           <li key={idx} style={{ color: THEME.colors.textMuted, marginBottom: "6px" }}>
             {day.date} ({day.start}–{day.end})
             {day.notes && (
-              <span style={{ color: THEME.colors.accentDark }}> — {day.notes}</span>
+              <span style={{ color: "var(--color-teal)"Dark }}> — {day.notes}</span>
             )}
             <button
               onClick={() => removeDay(idx)}
               style={{
                 marginLeft: "8px",
-                color: THEME.colors.accent,
+                color: "var(--color-teal)",
                 background: "none",
                 border: "none",
                 cursor: "pointer",
@@ -126,7 +126,7 @@ export default function CalendarWidget({ onSubmit }: { onSubmit?: (days: Selecte
         <button
           onClick={handleSubmit}
           style={{
-            background: THEME.colors.accent,
+            background: "var(--color-teal)",
             color: "#fff",
             border: "none",
             borderRadius: "8px",

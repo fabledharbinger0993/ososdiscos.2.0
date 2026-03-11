@@ -38,7 +38,7 @@ export default function MovieReel() {
 
   return (
     <section style={{ padding: "60px 40px", background: THEME.colors.bg, color: THEME.colors.text }}>
-      <h2 style={{ color: THEME.colors.accent, fontSize: "36px", marginBottom: "24px" }}>
+      <h2 style={{ color: "var(--color-teal)", fontSize: "36px", marginBottom: "24px" }}>
         Live Reels
       </h2>
 
@@ -107,7 +107,7 @@ export default function MovieReel() {
           <button
             onClick={() => setAutoPlay(!autoPlay)}
             style={{
-              background: autoPlay ? THEME.colors.accent : "rgba(0,0,0,0.6)",
+              background: autoPlay ? "var(--color-teal)" : "rgba(0,0,0,0.6)",
               border: "none",
               color: "#fff",
               padding: "8px 16px",
