@@ -1,12 +1,39 @@
-import mongoose from "mongoose"
+import express from "express"
+import Bio from "../models/Bio.js"
+import auth from "../middleware/auth.js"
 
-export default mongoose.model("Bio", {
-  name:    { type: String, default: "Osos Discos" },
-  tagline: { type: String, default: "House · Disco · Live Events" },
-  bio:     { type: [String], default: [
-    "Osos Discos brings high-energy house and disco sets to festivals, weddings, club nights, and private events.",
-    "Available for bookings worldwide. Audio gear rental also available.",
-  ]},
-  photos: [{ url: String, caption: String }],
-  videos: [{ url: String, title: String }],
+const router = express.Router()
+
+// Public — frontend reads bio content
+router.get("/", async (req, res) => {
+  try {
+    let bio = await Bio.findOne()
+    if (!bio) bio = await Bio.create({})
+    res.json(bio)
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
 })
+
+// Protected — admin updates bio content
+router.put("/", auth, async (req, res) => {
+  try {
+    let bio = await Bio.findOne()
+    if (!bio) {
+      bio = await Bio.create(req.body)
+    } else {
+      const { name, tagline, bio: bioText, photos, videos } = req.body
+      if (name !== undefined)    bio.name    = name
+      if (tagline !== undefined) bio.tagline = tagline
+      if (bioText !== undefined) bio.bio     = bioText
+      if (photos !== undefined)  bio.photos  = photos
+      if (videos !== undefined)  bio.videos  = videos
+      await bio.save()
+    }
+    res.json(bio)
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
+export default router
