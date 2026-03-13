@@ -1,13 +1,13 @@
 /**
  * DJTable — Scene 1
  *
- * Fixed 1920×1080 canvas. Coordinates specified by user from Canva layout:
+ * Fixed 1920×1080 canvas. User-specified coordinates + position tweaks:
  *
  *   Flyer page button   : 220.4,  31.7, 353.7, 123.3,    0°
- *   Phone media player  : 739.4,  81.7, 335.9, 157.1,  5.2°
- *   Polaroid stack      : 1583.1, 62.2, 210.7, 216.7, -17°
+ *   Phone media player  : 740.4,  83.7, 335.9, 157.1,  5.2°  (+1 right, +2 down)
+ *   Polaroid stack      : 1585.1, 64.2, 210.7, 216.7, -17°   (+2 right, +2 down)
  *   SoundCloud player   : 434.7, 382.5, 332.4, 195.6,    0°
- *   iPad / booking      : 1283,  362.3,   449, 596.2, -3.6°
+ *   iPad / booking      : 1284,  363.3,   449, 596.2, -3.6°  (+1 right, +1 down)
  */
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -80,7 +80,7 @@ export default function DJTable() {
         <div style={{
           position:         "absolute",
           inset:            0,
-          backgroundImage:  "url('/bg-table.jpg')",
+          backgroundImage:  "url('/bg-table2.jpg')",
           backgroundSize:   "100% 100%",
           backgroundRepeat: "no-repeat",
           zIndex:           1,
@@ -92,8 +92,8 @@ export default function DJTable() {
           aria-label="View flyers"
         />
 
-        {/* PHONE: 739.4, 81.7, 335.9, 157.1, 5.2° */}
-        <div style={{ ...px(739.4, 81.7, 335.9, 157.1), transform: "rotate(5.2deg)", overflow: "hidden", borderRadius: "6%", zIndex: 10 }}>
+        {/* PHONE: +1 right +2 down → 740.4, 83.7 */}
+        <div style={{ ...px(740.4, 83.7, 335.9, 157.1), transform: "rotate(5.2deg)", overflow: "hidden", borderRadius: "6%", zIndex: 10 }}>
           {settings.phone_video_url ? (
             <video src={settings.phone_video_url} autoPlay muted loop playsInline
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -102,12 +102,12 @@ export default function DJTable() {
           )}
         </div>
 
-        {/* POLAROIDS: 1583.1, 62.2, 210.7, 216.7, -17° */}
-        <div style={{ ...px(1583.1, 62.2, 210.7, 216.7), transform: "rotate(-17deg)", zIndex: 10 }}>
+        {/* POLAROIDS: +2 right +2 down → 1585.1, 64.2 */}
+        <div style={{ ...px(1585.1, 64.2, 210.7, 216.7), transform: "rotate(-17deg)", zIndex: 10 }}>
           <DJTablePolaroids photos={settings.polaroid_photos} />
         </div>
 
-        {/* SOUNDCLOUD: 434.7, 382.5, 332.4, 195.6, 0° */}
+        {/* SOUNDCLOUD: 434.7, 382.5, 332.4, 195.6 */}
         <div style={{ ...px(434.7, 382.5, 332.4, 195.6), overflow: "hidden", borderRadius: "2%", zIndex: 10 }}>
           <iframe src={embedUrl} width="100%" height="100%" frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen"
@@ -115,8 +115,8 @@ export default function DJTable() {
             title={settings.live_mode ? "Live stream" : "SoundCloud"} />
         </div>
 
-        {/* iPAD: 1283, 362.3, 449, 596.2, -3.6° */}
-        <div style={{ ...px(1283, 362.3, 449, 596.2), transform: "rotate(-3.6deg)", overflow: "hidden", borderRadius: "2%", zIndex: 10 }}>
+        {/* iPAD: +1 right +1 down → 1284, 363.3 */}
+        <div style={{ ...px(1284, 363.3, 449, 596.2), transform: "rotate(-3.6deg)", overflow: "hidden", borderRadius: "2%", zIndex: 10 }}>
           <DJTableIPad />
         </div>
 
