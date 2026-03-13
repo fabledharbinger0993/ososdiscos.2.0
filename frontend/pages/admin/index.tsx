@@ -240,7 +240,7 @@ export default function AdminDashboard() {
 function SettingsPanel({ headers }: { headers: () => Record<string, string> }) {
   const [s, setS] = useState({
     phone_video_url: "",
-    soundcloud_url: "",
+    soundcloud_url: "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kineticnola&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=true",
     twitch_channel: "",
     live_mode: false,
     polaroid_photos: [] as string[],

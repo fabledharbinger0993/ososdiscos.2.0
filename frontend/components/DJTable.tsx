@@ -1,15 +1,14 @@
 /**
  * DJTable — Scene 1
  *
- * bg-table.jpg (2000×1545) already contains the physical devices.
- * This component places SCREEN-CONTENT overlays at exact % positions
- * over those device screens, matched to revised-placement.jpg.
+ * bg-table.jpg (2000×1545) contains all physical device frames.
+ * Overlays are screen-content only, positioned at measured % coordinates.
  *
- * Inner-container sizing mirrors background-size:cover so % positions
- * are stable across any viewport aspect ratio.
+ * Coordinate reference: 2000×1545 image pixel space.
+ * All abs() values measured directly from bg-table.jpg.
  *
- * Image coordinate system: 1999 × 1545 px
- * Elements below are measured as % of that coordinate space.
+ * SCALE (0.88) pulls the bird's-eye view back so the scene
+ * breathes within the viewport instead of edge-to-edge.
  */
 
 import { useState, useEffect } from "react"
@@ -17,10 +16,9 @@ import Link from "next/link"
 import DJTableIPad from "./DJTableIPad"
 import DJTablePolaroids from "./DJTablePolaroids"
 
-const API_URL  = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
-const IMG_W    = 1999
-const IMG_H    = 1545
-const IMG_RATIO = IMG_W / IMG_H   // ≈ 1.2944
+const API_URL   = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+const IMG_RATIO = 2000 / 1545   // ≈ 1.2944
+const SCALE     = 0.88           // pull-back factor — scene breathes in viewport
 
 interface Settings {
   phone_video_url: string
@@ -31,7 +29,7 @@ interface Settings {
 }
 
 const DEFAULT_SC =
-  "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/3207" +
+  "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kineticnola" +
   "&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false" +
   "&show_user=false&show_reposts=false&visual=true"
 
@@ -67,29 +65,38 @@ export default function DJTable() {
   if (mobile) return <MobileScene settings={settings} embedUrl={embedUrl} />
 
   return (
-    /* ── Outer viewport clip ────────────────────────────────────────────── */
     <div style={outerStyle}>
+      {/* Inner container: mirrors background-size:cover geometry, then scaled back */}
+      <div style={{
+        position: "absolute",
+        width:    `max(100vw, calc(100vh * ${IMG_RATIO}))`,
+        height:   `max(100vh, calc(100vw / ${IMG_RATIO}))`,
+        top:      "50%",
+        left:     "50%",
+        transform: `translate(-50%, -50%) scale(${SCALE})`,
+      }}>
 
-      {/* ── Inner container — mirrors background-size:cover geometry ────── */}
-      <div style={innerStyle(IMG_RATIO)}>
+        {/* Background photo — fills inner container exactly */}
+        <div style={{
+          position:            "absolute",
+          inset:               0,
+          backgroundImage:     "url('/bg-table.jpg')",
+          backgroundSize:      "100% 100%",
+          backgroundRepeat:    "no-repeat",
+        }} />
 
-        {/* Background photo */}
-        <div style={bgStyle} />
+        {/*
+         * ── OVERLAY POSITIONS (% of 2000×1545 image) ──────────────────────
+         * Measured directly from bg-table.jpg.
+         *
+         * abs(left%, top%, width%, height%)
+         */}
 
-        {/* ── FLYER TAB — upper left ────────────────────────────────────── */}
-        {/* Sits over the small photo/tab area already in the image         */}
-        <Link href="/flyers" style={abs(0, 0, 14, 20)} tabIndex={0} aria-label="View flyers">
-          <div style={{
-            width: "100%", height: "100%",
-            display: "flex", alignItems: "flex-end", justifyContent: "flex-start",
-            padding: "6% 8%",
-            cursor: "pointer",
-          }} />
-        </Link>
+        {/* FLYER TAB — upper-left sticker area, transparent click zone */}
+        <Link href="/flyers" style={{ ...abs(0, 0, 22, 20), zIndex: 30 }} aria-label="View flyers" />
 
-        {/* ── PHONE SCREEN — left, angled ───────────────────────────────── */}
-        {/* Covers the phone screen in bg-table.jpg                         */}
-        <div style={{ ...abs(3, 23, 9, 25), transform: "rotate(-8deg)", overflow: "hidden", borderRadius: "4%" }}>
+        {/* PHONE SCREEN — left, angled ~-12° */}
+        <div style={{ ...abs(8, 27, 11, 24), transform: "rotate(-12deg)", overflow: "hidden", borderRadius: "5%" }}>
           {settings.phone_video_url ? (
             <video
               src={settings.phone_video_url}
@@ -97,19 +104,17 @@ export default function DJTable() {
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
           ) : (
-            <div style={{ width: "100%", height: "100%", background: "#0a0a0a" }} />
+            <div style={{ width: "100%", height: "100%", background: "#000" }} />
           )}
         </div>
 
-        {/* ── iPAD SCREEN — upper center ────────────────────────────────── */}
-        {/* Covers the iPad/tablet screen in bg-table.jpg                   */}
-        <div style={{ ...abs(18, 10.5, 24, 27), transform: "rotate(1.5deg)", overflow: "hidden", borderRadius: "1.5%" }}>
+        {/* iPAD SCREEN — upper center, slight +2° tilt */}
+        <div style={{ ...abs(28, 3.5, 45, 42), transform: "rotate(2deg)", overflow: "hidden", borderRadius: "1%" }}>
           <DJTableIPad />
         </div>
 
-        {/* ── CONTROLLER SCREEN — center ────────────────────────────────── */}
-        {/* Covers the built-in display on the Omnis-Duo                    */}
-        <div style={{ ...abs(19, 53.5, 22, 13), overflow: "hidden", borderRadius: "2%" }}>
+        {/* CONTROLLER SCREEN — center of OMNIS-DUO */}
+        <div style={{ ...abs(26, 47, 30, 16), overflow: "hidden", borderRadius: "1%" }}>
           <iframe
             src={embedUrl}
             width="100%" height="100%"
@@ -120,9 +125,8 @@ export default function DJTable() {
           />
         </div>
 
-        {/* ── POLAROIDS — lower right ───────────────────────────────────── */}
-        {/* Overlays on top of the polaroid frames already in bg-table.jpg  */}
-        <div style={{ ...abs(70, 64, 20, 30), pointerEvents: "auto" }}>
+        {/* POLAROIDS — lower right stack */}
+        <div style={{ ...abs(72, 66, 22, 33), zIndex: 10 }}>
           <DJTablePolaroids photos={settings.polaroid_photos} />
         </div>
 
@@ -131,60 +135,25 @@ export default function DJTable() {
   )
 }
 
-// ── Layout helpers ────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
-/**
- * abs(left%, top%, width%, height%) → absolute-positioned CSSProperties
- * All values are % of the inner container (= % of background image).
- */
-function abs(
-  left: number,
-  top: number,
-  width: number,
-  height: number,
-): React.CSSProperties {
+/** abs(left%, top%, width%, height%) → absolute CSSProperties */
+function abs(l: number, t: number, w: number, h: number): React.CSSProperties {
   return {
     position: "absolute",
-    left:   `${left}%`,
-    top:    `${top}%`,
-    width:  `${width}%`,
-    height: `${height}%`,
+    left:     `${l}%`,
+    top:      `${t}%`,
+    width:    `${w}%`,
+    height:   `${h}%`,
   }
 }
-
-// ── Styles ────────────────────────────────────────────────────────────────────
 
 const outerStyle: React.CSSProperties = {
-  position: "relative",
-  width:    "100vw",
-  height:   "100vh",
-  overflow: "hidden",
-  background: "#1a1008", // edge colour if letterboxing ever shows
-}
-
-/**
- * Inner container sized to match background-size:cover behaviour for IMG_RATIO.
- * max(100vw, 100vh*ratio)  ×  max(100vh, 100vw/ratio)
- * Centred in the outer viewport.
- */
-function innerStyle(ratio: number): React.CSSProperties {
-  return {
-    position: "absolute",
-    width:    `max(100vw, calc(100vh * ${ratio}))`,
-    height:   `max(100vh, calc(100vw / ${ratio}))`,
-    top:      "50%",
-    left:     "50%",
-    transform: "translate(-50%, -50%)",
-  }
-}
-
-const bgStyle: React.CSSProperties = {
-  position:           "absolute",
-  inset:              0,
-  backgroundImage:    "url('/bg-table.jpg')",
-  backgroundSize:     "100% 100%",  // fill inner container exactly
-  backgroundPosition: "center",
-  backgroundRepeat:   "no-repeat",
+  position:   "relative",
+  width:      "100vw",
+  height:     "100vh",
+  overflow:   "hidden",
+  background: "#14100a", // dark surround visible when SCALE < 1
 }
 
 // ── Mobile fallback ───────────────────────────────────────────────────────────
