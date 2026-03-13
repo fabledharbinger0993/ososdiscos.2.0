@@ -5,11 +5,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 
 type Movie = { url: string; title: string }
 
-function youtubeEmbedUrl(url: string): string | null {
-  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/)
-  return match ? `https://www.youtube.com/embed/${match[1]}` : null
-}
-
 export default function MovieReel() {
   const [movies, setMovies] = useState<Movie[]>([])
   const [current, setCurrent] = useState(0)
@@ -36,7 +31,6 @@ export default function MovieReel() {
   if (movies.length === 0) return null
 
   const movie = movies[current]
-  const embedUrl = youtubeEmbedUrl(movie.url)
 
   return (
     <section
@@ -70,34 +64,18 @@ export default function MovieReel() {
           height: 0,
         }}
       >
-        {embedUrl ? (
-          <iframe
-            src={embedUrl}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              border: "none",
-            }}
-            allowFullScreen
-            title={movie.title || "Video"}
-          />
-        ) : (
-          <video
-            src={movie.url}
-            controls
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
-          />
-        )}
+        <video
+          src={movie.url}
+          controls
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
       </div>
 
       {/* Controls below the video */}
