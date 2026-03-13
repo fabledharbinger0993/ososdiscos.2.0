@@ -134,11 +134,7 @@ export default function DJTableIPad() {
   )
 
   return (
-    <div style={outerStyle}>
-      {/* iPad frame */}
-      <div style={frameStyle}>
-        {/* Screen */}
-        <div style={screenStyle}>
+    <div style={screenStyle}>
           {/* Toggle buttons — calendar / gear */}
           {view !== "form" && (
             <div style={toggleBarStyle}>
@@ -310,43 +306,16 @@ export default function DJTableIPad() {
               )}
             </div>
           )}
-        </div>
-
-        {/* Home button */}
-        <div style={{ width: 20, height: 20, borderRadius: "50%", background: "#ccc", border: "2px solid #aaa", flexShrink: 0 }} />
-      </div>
     </div>
   )
 }
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 
-const outerStyle: React.CSSProperties = {
+const screenStyle: React.CSSProperties = {
   width: "100%",
   height: "100%",
-  display: "flex",
-  alignItems: "stretch",
-}
-
-const frameStyle: React.CSSProperties = {
-  flex: 1,
-  background: "#1a1a1a",
-  borderRadius: "clamp(6px,1vw,12px)",
-  border: "2px solid #333",
-  boxShadow: "0 4px 20px rgba(0,0,0,0.6), inset 0 0 0 2px #111",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "8px 6px 10px",
-  gap: 6,
-  overflow: "hidden",
-}
-
-const screenStyle: React.CSSProperties = {
-  flex: 1,
-  width: "100%",
   background: "#fff",
-  borderRadius: "clamp(3px,0.5vw,6px)",
   overflow: "hidden",
   display: "flex",
   flexDirection: "column",
