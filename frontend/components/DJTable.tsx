@@ -11,16 +11,19 @@
  *   SoundCloud player   : 434.7, 382.5, 332.4, 195.6,    0°
  *   iPad / booking      : 1283,  362.3,   449, 596.2, -3.6°
  */
-
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import DJTableIPad from "./DJTableIPad"
 import DJTablePolaroids from "./DJTablePolaroids"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
-
+const API_URL  = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 const CANVAS_W = 1920
 const CANVAS_H = 1080
+
+const DEFAULT_SC =
+  "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kineticnola" +
+  "&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false" +
+  "&show_user=false&show_reposts=false&visual=true"
 
 interface Settings {
   phone_video_url: string
@@ -29,11 +32,6 @@ interface Settings {
   live_mode:       boolean
   polaroid_photos: string[]
 }
-
-const DEFAULT_SC =
-  "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kineticnola" +
-  "&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false" +
-  "&show_user=false&show_reposts=false&visual=true"
 
 export default function DJTable() {
   const [settings, setSettings] = useState<Settings>({
@@ -82,38 +80,28 @@ export default function DJTable() {
         transform:       `translate(-50%, -50%) scale(${scale})`,
         transformOrigin: "center center",
       }}>
-
         {/* Background — stretched to fill canvas exactly */}
         <div style={{
-          position:            "absolute",
-          inset:               0,
-          backgroundImage:     "url('/bg-table.jpg')",
-          backgroundSize:      "100% 100%",
-          backgroundRepeat:    "no-repeat",
-            zIndex: 1,
+          position:         "absolute",
+          inset:            0,
+          backgroundImage:  "url('/bg-table.jpg')",
+          backgroundSize:   "100% 100%",
+          backgroundRepeat: "no-repeat",
+          zIndex:           1,
+        }} />
 
-        {/*
-         * ── OVERLAY POSITIONS (% of 2000×1545 image) ──────────────────────
-         * Measured directly from bg-table.jpg.
-         *
-         * abs(left%, top%, width%, height%)
-         */}
-            {settings.phone_video_url ? (
-        {/* FLYER TAB — upper-left sticker area, transparent click zone */}
-        <Link href="/flyers" style={{ ...abs(0, 0, 22, 20), zIndex: 30 }} aria-label="View flyers" />
+        {/* ── FLYER PAGE BUTTON — 220.4, 31.7, 353.7, 123.3, 0° ── */}
+        <Link href="/flyers"
+          style={{ ...px(220.4, 31.7, 353.7, 123.3), zIndex: 30, display: "block" }}
+          aria-label="View flyers"
+        />
 
         {/* ── PHONE MEDIA PLAYER — 739.4, 81.7, 335.9, 157.1, 5.2° ── */}
-        <div style={{
-          ...px(739.4, 81.7, 335.9, 157.1),
-          transform:    "rotate(5.2deg)",
-          overflow:     "hidden",
-          borderRadius: "5%",
-        }}>
+        <div style={{ ...px(739.4, 81.7, 335.9, 157.1), transform: "rotate(5.2deg)", overflow: "hidden", borderRadius: "5%", zIndex: 10 }}>
           {settings.phone_video_url ? (
             <video
               src={settings.phone_video_url}
               autoPlay muted loop playsInline
-          <div style={{ ...abs(8, 27, 11, 24), transform: "rotate(-12deg)", overflow: "hidden", borderRadius: "5%", zIndex: 10 }}>
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
           ) : (
@@ -122,16 +110,12 @@ export default function DJTable() {
         </div>
 
         {/* ── POLAROID STACK — 1583.1, 62.2, 210.7, 216.7, -17° ── */}
-        <div style={{
-          ...px(1583.1, 62.2, 210.7, 216.7),
-          transform: "rotate(-17deg)",
-          zIndex:    10,
-        }}>
+        <div style={{ ...px(1583.1, 62.2, 210.7, 216.7), transform: "rotate(-17deg)", zIndex: 10 }}>
           <DJTablePolaroids photos={settings.polaroid_photos} />
         </div>
 
         {/* ── SOUNDCLOUD PLAYER — 434.7, 382.5, 332.4, 195.6, 0° ── */}
-        <div style={{ ...px(434.7, 382.5, 332.4, 195.6), overflow: "hidden", borderRadius: "1%" }}>
+        <div style={{ ...px(434.7, 382.5, 332.4, 195.6), overflow: "hidden", borderRadius: "1%", zIndex: 10 }}>
           <iframe
             src={embedUrl}
             width="100%" height="100%"
@@ -143,12 +127,7 @@ export default function DJTable() {
         </div>
 
         {/* ── iPAD / BOOKING — 1283, 362.3, 449, 596.2, -3.6° ── */}
-        <div style={{
-          ...px(1283, 362.3, 449, 596.2),
-          transform:    "rotate(-3.6deg)",
-          overflow:     "hidden",
-          borderRadius: "1%",
-        }}>
+        <div style={{ ...px(1283, 362.3, 449, 596.2), transform: "rotate(-3.6deg)", overflow: "hidden", borderRadius: "1%", zIndex: 10 }}>
           <DJTableIPad />
         </div>
 
@@ -158,14 +137,11 @@ export default function DJTable() {
 }
 
 // ── Helper ─────────────────────────────────────────────────────────────────────
-
-/** Absolute pixel position within the 1920×1080 canvas */
 function px(x: number, y: number, w: number, h: number): React.CSSProperties {
   return { position: "absolute", left: x, top: y, width: w, height: h }
 }
 
 // ── Mobile fallback ────────────────────────────────────────────────────────────
-
 function MobileScene({ settings, embedUrl }: { settings: Settings; embedUrl: string }) {
   return (
     <div style={{ minHeight: "100vh", background: "#1a120a", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px 16px 40px", gap: 20 }}>
