@@ -83,7 +83,7 @@ export default function DJTable() {
           backgroundImage:     "url('/bg-table.jpg')",
           backgroundSize:      "100% 100%",
           backgroundRepeat:    "no-repeat",
-        }} />
+            zIndex: 1,
 
         {/*
          * ── OVERLAY POSITIONS (% of 2000×1545 image) ──────────────────────
@@ -91,7 +91,7 @@ export default function DJTable() {
          *
          * abs(left%, top%, width%, height%)
          */}
-
+            {settings.phone_video_url ? (
         {/* FLYER TAB — upper-left sticker area, transparent click zone */}
         <Link href="/flyers" style={{ ...abs(0, 0, 22, 20), zIndex: 30 }} aria-label="View flyers" />
 
@@ -101,6 +101,7 @@ export default function DJTable() {
             <video
               src={settings.phone_video_url}
               autoPlay muted loop playsInline
+          <div style={{ ...abs(8, 27, 11, 24), transform: "rotate(-12deg)", overflow: "hidden", borderRadius: "5%", zIndex: 10 }}>
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
           ) : (
