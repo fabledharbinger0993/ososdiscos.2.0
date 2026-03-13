@@ -35,6 +35,15 @@ router.get("/events", async (req, res) => {
   }
 })
 
+router.get("/flyers", async (req, res) => {
+  try {
+    const flyers = await Media.find({ type: "flyer" }).sort({ order: 1 })
+    res.json(flyers)
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+})
+
 // Protected routes (admin only) ───────────────────────────────────────────────
 
 router.post("/", auth, async (req, res) => {
