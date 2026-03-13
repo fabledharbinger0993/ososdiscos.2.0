@@ -159,8 +159,8 @@ const S = {
   },
 }
 
-type Tab = "theme" | "bio" | "media" | "layout"
-type MediaType = "movie" | "picture" | "event"
+type Tab = "theme" | "bio" | "media" | "layout" | "settings"
+type MediaType = "movie" | "picture" | "event" | "flyer"
 
 interface MediaItem {
   _id?: string
@@ -216,7 +216,7 @@ export default function AdminDashboard() {
 
         {/* Tabs */}
         <div style={S.tabs}>
-          {(["theme","bio","media","layout"] as Tab[]).map(t => (
+          {(["settings","theme","bio","media","layout"] as Tab[]).map(t => (
             <button key={t} style={S.tab(tab === t)} onClick={() => setTab(t)}>
               {t.charAt(0).toUpperCase() + t.slice(1)}
             </button>
@@ -225,13 +225,109 @@ export default function AdminDashboard() {
 
         {/* Panels */}
         <div style={S.panel}>
-          {tab === "theme"  && <ThemePanel  headers={headers} />}
-          {tab === "bio"    && <BioPanel    headers={headers} />}
-          {tab === "media"  && <MediaPanel  headers={headers} />}
-          {tab === "layout" && <LayoutPanel headers={headers} />}
+          {tab === "settings" && <SettingsPanel headers={headers} />}
+          {tab === "theme"    && <ThemePanel    headers={headers} />}
+          {tab === "bio"      && <BioPanel      headers={headers} />}
+          {tab === "media"    && <MediaPanel    headers={headers} />}
+          {tab === "layout"   && <LayoutPanel   headers={headers} />}
         </div>
       </div>
     </>
+  )
+}
+
+// ── Settings Panel ────────────────────────────────────────────────────────────
+function SettingsPanel({ headers }: { headers: () => Record<string, string> }) {
+  const [s, setS] = useState({
+    phone_video_url: "",
+    soundcloud_url: "",
+    twitch_channel: "",
+    live_mode: false,
+    polaroid_photos: [] as string[],
+    emailjs_service: "",
+    emailjs_template: "",
+    emailjs_key: "",
+  })
+  const [status, setStatus] = useState("")
+
+  useEffect(() => {
+    axios.get(`${API_URL}/api/settings`).then(r => setS({ ...s, ...r.data })).catch(() => {})
+  }, [])
+
+  const updatePolaroid = (i: number, val: string) =>
+    setS(prev => ({ ...prev, polaroid_photos: prev.polaroid_photos.map((p, idx) => idx === i ? val : p) }))
+  const addPolaroid    = () => setS(prev => ({ ...prev, polaroid_photos: [...prev.polaroid_photos, ""] }))
+  const removePolaroid = (i: number) =>
+    setS(prev => ({ ...prev, polaroid_photos: prev.polaroid_photos.filter((_, idx) => idx !== i) }))
+
+  const save = async () => {
+    try {
+      await axios.put(`${API_URL}/api/settings`, s, { headers: headers() })
+      setStatus("Saved ✓")
+    } catch { setStatus("Save failed") }
+  }
+
+  return (
+    <div>
+      <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "26px", color: "#d4af37", marginBottom: "24px", letterSpacing: "2px" }}>
+        Site Settings
+      </h2>
+
+      <div style={S.section}>
+        <h3 style={{ color: "#888", fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px" }}>Scene 1 — DJ Table</h3>
+        <label style={S.label}>Phone screen video URL</label>
+        <input style={S.input} placeholder="https://..." value={s.phone_video_url}
+          onChange={e => setS(prev => ({ ...prev, phone_video_url: e.target.value }))} />
+
+        <label style={S.label}>SoundCloud embed URL</label>
+        <input style={S.input} placeholder="https://w.soundcloud.com/player/..." value={s.soundcloud_url}
+          onChange={e => setS(prev => ({ ...prev, soundcloud_url: e.target.value }))} />
+
+        <label style={S.label}>Twitch channel name</label>
+        <input style={S.input} placeholder="yourchannelname" value={s.twitch_channel}
+          onChange={e => setS(prev => ({ ...prev, twitch_channel: e.target.value }))} />
+
+        <div style={{ ...S.row, marginBottom: "12px" }}>
+          <label style={{ ...S.label, margin: 0 }}>Live mode (show Twitch instead of SoundCloud)</label>
+          <input
+            type="checkbox"
+            checked={s.live_mode}
+            onChange={e => setS(prev => ({ ...prev, live_mode: e.target.checked }))}
+            style={{ width: 18, height: 18, marginLeft: 12, cursor: "pointer" }}
+          />
+        </div>
+      </div>
+
+      <div style={S.section}>
+        <h3 style={{ color: "#888", fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px" }}>Polaroid Photos (3–5)</h3>
+        {s.polaroid_photos.map((url, i) => (
+          <div key={i} style={S.row}>
+            <input style={{ ...S.input, marginBottom: 0, flex: 1 }} value={url}
+              onChange={e => updatePolaroid(i, e.target.value)} placeholder="https://image-url..." />
+            <button style={S.removeBtn} onClick={() => removePolaroid(i)}>✕</button>
+          </div>
+        ))}
+        {s.polaroid_photos.length < 5 && (
+          <button style={S.addBtn} onClick={addPolaroid}>+ Add photo</button>
+        )}
+      </div>
+
+      <div style={S.section}>
+        <h3 style={{ color: "#888", fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px" }}>EmailJS (for event inquiry form)</h3>
+        <label style={S.label}>Service ID</label>
+        <input style={S.input} placeholder="service_xxxxxxx" value={s.emailjs_service}
+          onChange={e => setS(prev => ({ ...prev, emailjs_service: e.target.value }))} />
+        <label style={S.label}>Template ID</label>
+        <input style={S.input} placeholder="template_xxxxxxx" value={s.emailjs_template}
+          onChange={e => setS(prev => ({ ...prev, emailjs_template: e.target.value }))} />
+        <label style={S.label}>Public Key</label>
+        <input style={S.input} placeholder="your_public_key" value={s.emailjs_key}
+          onChange={e => setS(prev => ({ ...prev, emailjs_key: e.target.value }))} />
+      </div>
+
+      <button style={S.saveBtn} onClick={save}>Save Settings</button>
+      {status && <p style={S.statusMsg(status.includes("✓"))}>{status}</p>}
+    </div>
   )
 }
 
@@ -396,7 +492,7 @@ function MediaPanel({ headers }: { headers: () => Record<string, string> }) {
   const [status, setStatus] = useState("")
 
   const load = useCallback(() => {
-    const endpoint = mediaTab === "movie" ? "movies" : mediaTab === "picture" ? "pictures" : "events"
+    const endpoint = mediaTab === "movie" ? "movies" : mediaTab === "picture" ? "pictures" : mediaTab === "event" ? "events" : "flyers"
     axios.get(`${API_URL}/api/media/${endpoint}`).then(r => setItems(r.data)).catch(() => {})
   }, [mediaTab])
 
@@ -421,10 +517,10 @@ function MediaPanel({ headers }: { headers: () => Record<string, string> }) {
     <div>
       <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "26px", color: "#d4af37", marginBottom: "24px", letterSpacing: "2px" }}>Media</h2>
 
-      <div style={{ display: "flex", gap: "8px", marginBottom: "24px" }}>
-        {(["movie","picture","event"] as MediaType[]).map(t => (
+      <div style={{ display: "flex", gap: "8px", marginBottom: "24px", flexWrap: "wrap" as const }}>
+        {(["movie","picture","event","flyer"] as MediaType[]).map(t => (
           <button key={t} style={S.tab(mediaTab === t)} onClick={() => setMediaTab(t)}>
-            {t === "movie" ? "Movies" : t === "picture" ? "Pictures" : "Events"}
+            {t === "movie" ? "Movies" : t === "picture" ? "Pictures" : t === "event" ? "Events" : "Flyers (Wall)"}
           </button>
         ))}
       </div>
@@ -444,11 +540,11 @@ function MediaPanel({ headers }: { headers: () => Record<string, string> }) {
       {/* Add new */}
       <div style={{ marginTop: "24px", borderTop: "1px solid #1e1e1e", paddingTop: "24px" }}>
         <h3 style={{ color: "#888", fontSize: "11px", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "16px" }}>
-          Add {mediaTab === "movie" ? "movie" : mediaTab === "picture" ? "picture" : "event"}
+          Add {mediaTab === "movie" ? "movie" : mediaTab === "picture" ? "picture" : mediaTab === "event" ? "event" : "flyer"}
         </h3>
         <input style={S.input} placeholder="URL *" value={newItem.url} onChange={e => setNewItem(n => ({ ...n, url: e.target.value }))} />
         <input style={S.input} placeholder="Title" value={newItem.title} onChange={e => setNewItem(n => ({ ...n, title: e.target.value }))} />
-        {mediaTab !== "movie" && (
+        {(mediaTab === "picture" || mediaTab === "event") && (
           <input style={S.input} placeholder="Caption" value={newItem.caption} onChange={e => setNewItem(n => ({ ...n, caption: e.target.value }))} />
         )}
         {mediaTab === "event" && (

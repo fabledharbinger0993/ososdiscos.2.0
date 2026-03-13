@@ -4,11 +4,12 @@ import cors from "cors"
 import mongoose from "mongoose"
 
 // ── Route imports ─────────────────────────────────────────────────────────────
-import loginRouter  from "./routes/login.js"
-import themeRouter  from "./routes/theme.js"
-import bioRouter    from "./middleware/Bio.js"
-import layoutRouter from "./modules/Layout.js"
-import mediaRouter  from "./modules/Media.js"
+import loginRouter    from "./routes/login.js"
+import themeRouter    from "./routes/theme.js"
+import bioRouter      from "./middleware/Bio.js"
+import layoutRouter   from "./modules/Layout.js"
+import mediaRouter    from "./modules/Media.js"
+import settingsRouter from "./routes/settings.js"
 
 // ── Startup warnings (non-fatal — server still starts so healthcheck passes) ──
 if (!process.env.JWT_SECRET) console.warn("⚠️  JWT_SECRET is not set — login will not work")
@@ -59,6 +60,7 @@ app.use("/api/theme",      themeRouter)
 app.use("/api/bio",        bioRouter)
 app.use("/api/layout",     layoutRouter)
 app.use("/api/media",      mediaRouter)
+app.use("/api/settings",   settingsRouter)
 
 // ── 404 + error handlers ──────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: "Not found" }))
