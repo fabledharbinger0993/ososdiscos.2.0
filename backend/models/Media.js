@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const mediaSchema = new mongoose.Schema({
-  type:     { type: String, enum: ["movie", "picture", "event"], required: true },
+  type:     { type: String, enum: ["movie", "picture", "event", "flyer"], required: true },
   url:      { type: String, required: true },
   title:    { type: String, default: "" },
   caption:  { type: String, default: "" },
