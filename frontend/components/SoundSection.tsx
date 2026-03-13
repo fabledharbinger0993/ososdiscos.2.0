@@ -47,7 +47,7 @@ export default function SoundSection() {
           width="100%"
           height={mobile ? 166 : 300}
           style={{ display: "block", border: "none" }}
-          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/3207&color=%23d4af37&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true"
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kineticnola&color=%23d4af37&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true"
           title="SoundCloud player"
         />
       </div>
