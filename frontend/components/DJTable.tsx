@@ -1,15 +1,13 @@
 /**
  * DJTable — Scene 1
  *
- * Fixed 1920×1080 design canvas scaled via CSS transform to fit the viewport.
- * All overlay positions re-measured from the NEW bg-table.jpg.
+ * Fixed 1920×1080 canvas. Coordinates specified by user from Canva layout:
  *
- * Coordinates (x, y, w, h, rotation°):
- *   Flyer page button   :  10,    5,  430, 165,    0°
- *   Phone media player  : 480,   50,  250, 165,  5.2°
- *   Polaroid stack      : 1190,  10,  212, 248,  -17°
- *   SoundCloud player   : 154,  151,  460, 162,    0°
- *   iPad / booking      : 810,  170,  470, 665, -3.6°
+ *   Flyer page button   : 220.4,  31.7, 353.7, 123.3,    0°
+ *   Phone media player  : 739.4,  81.7, 335.9, 157.1,  5.2°
+ *   Polaroid stack      : 1583.1, 62.2, 210.7, 216.7, -17°
+ *   SoundCloud player   : 434.7, 382.5, 332.4, 195.6,    0°
+ *   iPad / booking      : 1283,  362.3,   449, 596.2, -3.6°
  */
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -79,7 +77,6 @@ export default function DJTable() {
         transform:       `translate(-50%, -50%) scale(${scale})`,
         transformOrigin: "center center",
       }}>
-        {/* Background */}
         <div style={{
           position:         "absolute",
           inset:            0,
@@ -89,44 +86,37 @@ export default function DJTable() {
           zIndex:           1,
         }} />
 
-        {/* ── FLYER PAGE BUTTON — 10, 5, 430, 165, 0° ── */}
+        {/* FLYER PAGE BUTTON: 220.4, 31.7, 353.7, 123.3, 0° */}
         <Link href="/flyers"
-          style={{ ...px(10, 5, 430, 165), zIndex: 30, display: "block" }}
+          style={{ ...px(220.4, 31.7, 353.7, 123.3), zIndex: 30, display: "block" }}
           aria-label="View flyers"
         />
 
-        {/* ── PHONE MEDIA PLAYER — 480, 50, 250, 165, 5.2° ── */}
-        <div style={{ ...px(480, 50, 250, 165), transform: "rotate(5.2deg)", overflow: "hidden", borderRadius: "6%", zIndex: 10 }}>
+        {/* PHONE: 739.4, 81.7, 335.9, 157.1, 5.2° */}
+        <div style={{ ...px(739.4, 81.7, 335.9, 157.1), transform: "rotate(5.2deg)", overflow: "hidden", borderRadius: "6%", zIndex: 10 }}>
           {settings.phone_video_url ? (
-            <video
-              src={settings.phone_video_url}
-              autoPlay muted loop playsInline
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-            />
+            <video src={settings.phone_video_url} autoPlay muted loop playsInline
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           ) : (
             <div style={{ width: "100%", height: "100%", background: "#111" }} />
           )}
         </div>
 
-        {/* ── POLAROID STACK — 1190, 10, 212, 248, -17° ── */}
-        <div style={{ ...px(1190, 10, 212, 248), transform: "rotate(-17deg)", zIndex: 10 }}>
+        {/* POLAROIDS: 1583.1, 62.2, 210.7, 216.7, -17° */}
+        <div style={{ ...px(1583.1, 62.2, 210.7, 216.7), transform: "rotate(-17deg)", zIndex: 10 }}>
           <DJTablePolaroids photos={settings.polaroid_photos} />
         </div>
 
-        {/* ── SOUNDCLOUD PLAYER — 154, 151, 460, 162, 0° ── */}
-        <div style={{ ...px(154, 151, 460, 162), overflow: "hidden", borderRadius: "2%", zIndex: 10 }}>
-          <iframe
-            src={embedUrl}
-            width="100%" height="100%"
-            frameBorder="0"
+        {/* SOUNDCLOUD: 434.7, 382.5, 332.4, 195.6, 0° */}
+        <div style={{ ...px(434.7, 382.5, 332.4, 195.6), overflow: "hidden", borderRadius: "2%", zIndex: 10 }}>
+          <iframe src={embedUrl} width="100%" height="100%" frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen"
             style={{ border: "none", display: "block" }}
-            title={settings.live_mode ? "Live stream" : "SoundCloud"}
-          />
+            title={settings.live_mode ? "Live stream" : "SoundCloud"} />
         </div>
 
-        {/* ── iPAD / BOOKING — 810, 170, 470, 665, -3.6° ── */}
-        <div style={{ ...px(810, 170, 470, 665), transform: "rotate(-3.6deg)", overflow: "hidden", borderRadius: "2%", zIndex: 10 }}>
+        {/* iPAD: 1283, 362.3, 449, 596.2, -3.6° */}
+        <div style={{ ...px(1283, 362.3, 449, 596.2), transform: "rotate(-3.6deg)", overflow: "hidden", borderRadius: "2%", zIndex: 10 }}>
           <DJTableIPad />
         </div>
 
@@ -151,7 +141,8 @@ function MobileScene({ settings, embedUrl }: { settings: Settings; embedUrl: str
         }}>FLYERS →</Link>
       </div>
       <div style={{ width: "100%", maxWidth: 480, height: 160, borderRadius: 12, overflow: "hidden", background: "#000" }}>
-        <iframe src={embedUrl} width="100%" height="100%" frameBorder="0" allow="autoplay" title="Player" style={{ border: "none" }} />
+        <iframe src={embedUrl} width="100%" height="100%" frameBorder="0" allow="autoplay"
+          title="Player" style={{ border: "none" }} />
       </div>
       <div style={{ width: "100%", maxWidth: 480, height: 380, borderRadius: 12, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.5)" }}>
         <DJTableIPad />
@@ -163,7 +154,8 @@ function MobileScene({ settings, embedUrl }: { settings: Settings; embedUrl: str
       )}
       {settings.phone_video_url && (
         <div style={{ width: "100%", maxWidth: 480, borderRadius: 12, overflow: "hidden", background: "#000" }}>
-          <video src={settings.phone_video_url} autoPlay muted loop playsInline style={{ width: "100%", display: "block" }} />
+          <video src={settings.phone_video_url} autoPlay muted loop playsInline
+            style={{ width: "100%", display: "block" }} />
         </div>
       )}
     </div>
