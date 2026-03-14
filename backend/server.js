@@ -5,6 +5,7 @@ import mongoose from "mongoose"
 import User from "./models/User.js"
 
 // ── Route imports ─────────────────────────────────────────────────────────────
+import User         from "./models/User.js"
 import loginRouter    from "./routes/login.js"
 import themeRouter    from "./routes/theme.js"
 import bioRouter      from "./middleware/Bio.js"
@@ -76,6 +77,26 @@ const PORT = process.env.PORT || 5000
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend listening on port ${PORT}`)
 })
+
+// ── Seed admin user (runs once on first deploy) ───────────────────────────────
+async function seedAdmin() {
+  const username = process.env.SEED_ADMIN_USERNAME
+  const password = process.env.SEED_ADMIN_PASSWORD
+
+  if (!username || !password) {
+    console.warn("⚠️  SEED_ADMIN_USERNAME or SEED_ADMIN_PASSWORD not set — skipping admin seed")
+    return
+  }
+
+  const exists = await User.findOne({ username })
+  if (exists) {
+    console.log("ℹ️  Admin user already exists — skipping seed")
+    return
+  }
+
+  await User.create({ username, password, role: "admin" })
+  console.log(`✅ Admin user "${username}" created`)
+}
 
 // ── Connect MongoDB asynchronously (routes gate on mongoReady flag) ───────────
 if (process.env.MONGO_URI) {
