@@ -32,8 +32,8 @@ interface Settings {
 
 const DEFAULT_SC =
   "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kineticnola" +
-  "&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false" +
-  "&show_user=false&show_reposts=false&visual=true"
+  "&color=%23d4af37&auto_play=false&hide_related=true&show_comments=false" +
+  "&show_user=true&show_reposts=false&visual=false"
 
 export default function DJTable() {
   const [settings, setSettings] = useState<Settings>({
@@ -85,22 +85,20 @@ export default function DJTable() {
 
         {/* Background — stretched to fill canvas exactly */}
         <div style={{
-          position:            "absolute",
-          inset:               0,
-          backgroundImage:     "url('/bg-table.jpg')",
-          backgroundSize:      "100% 100%",
-          backgroundRepeat:    "no-repeat",
-            zIndex: 1,
+          position:         "absolute",
+          inset:            0,
+          backgroundImage:  "url('/bg-table.jpg')",
+          backgroundSize:   "100% 100%",
+          backgroundRepeat: "no-repeat",
+          zIndex:           1,
+        }} />
 
-        {/*
-         * ── OVERLAY POSITIONS (% of 2000×1545 image) ──────────────────────
-         * Measured directly from bg-table.jpg.
-         *
-         * abs(left%, top%, width%, height%)
-         */}
-            {settings.phone_video_url ? (
-        {/* FLYER TAB — upper-left sticker area, transparent click zone */}
-        <Link href="/flyers" style={{ ...abs(0, 0, 22, 20), zIndex: 30 }} aria-label="View flyers" />
+        {/* ── FLYER TAB — upper-left sticker/button area ── */}
+        <Link
+          href="/flyers"
+          style={{ ...px(220.4, 31.7, 353.7, 123.3), zIndex: 30 }}
+          aria-label="View flyers"
+        />
 
         {/* ── PHONE MEDIA PLAYER — 739.4, 81.7, 335.9, 157.1, 5.2° ── */}
         <div style={{
@@ -108,12 +106,12 @@ export default function DJTable() {
           transform:    "rotate(5.2deg)",
           overflow:     "hidden",
           borderRadius: "5%",
+          zIndex:       10,
         }}>
           {settings.phone_video_url ? (
             <video
               src={settings.phone_video_url}
               autoPlay muted loop playsInline
-          <div style={{ ...abs(8, 27, 11, 24), transform: "rotate(-12deg)", overflow: "hidden", borderRadius: "5%", zIndex: 10 }}>
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
           ) : (
@@ -131,7 +129,12 @@ export default function DJTable() {
         </div>
 
         {/* ── SOUNDCLOUD PLAYER — 434.7, 382.5, 332.4, 195.6, 0° ── */}
-        <div style={{ ...px(434.7, 382.5, 332.4, 195.6), overflow: "hidden", borderRadius: "1%" }}>
+        <div style={{
+          ...px(434.7, 382.5, 332.4, 195.6),
+          overflow:     "hidden",
+          borderRadius: "2px",
+          zIndex:       10,
+        }}>
           <iframe
             src={embedUrl}
             width="100%" height="100%"
@@ -147,7 +150,8 @@ export default function DJTable() {
           ...px(1283, 362.3, 449, 596.2),
           transform:    "rotate(-3.6deg)",
           overflow:     "hidden",
-          borderRadius: "1%",
+          borderRadius: "2%",
+          zIndex:       10,
         }}>
           <DJTableIPad />
         </div>

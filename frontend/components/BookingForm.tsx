@@ -1,4 +1,4 @@
-import { useState, FormEvent, CSSProperties } from "react"
+import { useState, useEffect, FormEvent, CSSProperties } from "react"
 
 const BOOKING_EMAIL = "booking@ososdiscos.com"
 
@@ -146,6 +146,13 @@ export default function BookingForm() {
   const [indoorOutdoor, setIndoorOutdoor] = useState("")
   const [eventDateTime, setEventDateTime] = useState("")
   const [location, setLocation] = useState("")
+
+  // Pre-fill date from ?date= query param (set by iPad calendar tap)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const date = params.get("date")
+    if (date) setEventDateTime(date)
+  }, [])
 
   // consult scheduling
   const [availableDays, setAvailableDays] = useState<string[]>([])
