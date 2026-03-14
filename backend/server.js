@@ -2,6 +2,7 @@ import "dotenv/config"
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
+import User from "./models/User.js"
 
 // ── Route imports ─────────────────────────────────────────────────────────────
 import User         from "./models/User.js"
@@ -109,7 +110,27 @@ if (process.env.MONGO_URI) {
     .then(async () => {
       mongoReady = true
       console.log("✅ MongoDB connected")
-      await seedAdmin()
+
+      // ── Seed admin user if missing ─────────────────────────
+      const username = process.env.SEED_ADMIN_USERNAME
+      const password = process.env.SEED_ADMIN_PASSWORD
+
+      if (username && password) {
+        const existing = await User.findOne({ username })
+
+        if (!existing) {
+          const user = new User({
+            username,
+            password,
+            role: "admin"
+          })
+
+          await user.save()
+          console.log("✅ Admin user seeded")
+        } else {
+          console.log("ℹ️ Admin user already exists")
+        }
+      }
     })
     .catch(err => {
       console.error("❌ MongoDB connection failed:", err.message)
