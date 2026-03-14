@@ -79,8 +79,13 @@ app.listen(PORT, "0.0.0.0", () => {
 
 // ── Seed admin user (runs once on first deploy) ───────────────────────────────
 async function seedAdmin() {
-  const username = process.env.SEED_ADMIN_USERNAME || "GuthrieAdmin"
-  const password = process.env.SEED_ADMIN_PASSWORD || "Knuckles@1031"
+  const username = process.env.SEED_ADMIN_USERNAME
+  const password = process.env.SEED_ADMIN_PASSWORD
+
+  if (!username || !password) {
+    console.warn("⚠️  SEED_ADMIN_USERNAME or SEED_ADMIN_PASSWORD not set — skipping admin seed")
+    return
+  }
 
   const exists = await User.findOne({ username })
   if (exists) {
