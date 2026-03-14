@@ -169,10 +169,11 @@ export default function GearBuilder() {
       <h3
         style={{
           fontFamily: "var(--font-display, 'Bebas Neue', sans-serif)",
-          color: "var(--color-magenta, #cc2478)",
+          color: "var(--color-gold, #d4af37)",
           fontSize: "1.2rem",
           letterSpacing: "0.08em",
           marginBottom: 20,
+          textShadow: "0 0 12px rgba(212,175,55,0.4)",
         }}
       >
         Your Build
@@ -286,8 +287,10 @@ export default function GearBuilder() {
                   background: eventType === t ? "var(--color-magenta, #cc2478)" : "var(--color-bg, #0a0a0a)",
                   color: "#fff",
                   cursor: "pointer",
-                  fontSize: "13px",
-                  textTransform: "capitalize",
+                  fontFamily: "var(--font-display, 'Bebas Neue', sans-serif)",
+                  fontSize: "1rem",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
                   minHeight: 44,
                 }}
               >
@@ -339,6 +342,7 @@ export default function GearBuilder() {
                     marginBottom: "16px",
                     borderBottom: "1px solid var(--color-border, #1e1e1e)",
                     paddingBottom: "10px",
+                    textShadow: "0 0 12px rgba(212,175,55,0.35)",
                   }}
                 >
                   {cat}

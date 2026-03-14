@@ -67,14 +67,14 @@ export default function DJTableIPad() {
           </div>
 
           {/* Day labels */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 1, marginBottom: 2 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 2, marginBottom: 3 }}>
             {DAY_NAMES.map(d => (
               <div key={d} style={{ textAlign: "center", fontSize: "clamp(7px,1vw,10px)", color: "#888", fontWeight: 600 }}>{d}</div>
             ))}
           </div>
 
           {/* Days grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 2, flex: 1 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 3, flex: 1 }}>
             {cells.map((day, i) => {
               if (!day) return <div key={i} />
               const past = isPast(day)
@@ -91,7 +91,7 @@ export default function DJTableIPad() {
                     borderRadius: 3,
                     fontSize: "clamp(7px,1vw,11px)",
                     cursor: past ? "default" : "pointer",
-                    padding: "2px 0",
+                    padding: "3px 0",
                     fontWeight: isToday ? 700 : 400,
                     transition: "background 0.15s",
                   }}
@@ -100,9 +100,26 @@ export default function DJTableIPad() {
             })}
           </div>
 
-          <p style={{ fontSize: "clamp(7px,0.9vw,9px)", color: "#999", textAlign: "center", marginTop: 4 }}>
-            Tap a date to request a quote
-          </p>
+          {/* Book Now button */}
+          <a
+            href="/booking"
+            style={{
+              display: "block",
+              marginTop: 6,
+              padding: "6px 0",
+              background: "#cc2478",
+              color: "#fff",
+              borderRadius: 5,
+              fontSize: "clamp(8px,1.1vw,12px)",
+              fontWeight: 700,
+              textDecoration: "none",
+              textAlign: "center",
+              letterSpacing: 1,
+              flexShrink: 0,
+            }}
+          >
+            BOOK NOW →
+          </a>
         </div>
       )}
 
