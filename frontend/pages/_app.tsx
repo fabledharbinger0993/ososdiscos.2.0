@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app"
 import Head from "next/head"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 import { useTheme } from "../hooks/useTheme"
 import "../styles/globals.css"
 
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <Component {...pageProps} />
       <SpeedInsights />
+      <Analytics />
     </>
   )
 }
