@@ -4,6 +4,7 @@ import cors from "cors"
 import mongoose from "mongoose"
 
 // ── Route imports ─────────────────────────────────────────────────────────────
+import User         from "./models/User.js"
 import loginRouter    from "./routes/login.js"
 import themeRouter    from "./routes/theme.js"
 import bioRouter      from "./middleware/Bio.js"
@@ -76,6 +77,21 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend listening on port ${PORT}`)
 })
 
+// ── Seed admin user (runs once on first deploy) ───────────────────────────────
+async function seedAdmin() {
+  const username = process.env.SEED_ADMIN_USERNAME || "GuthrieAdmin"
+  const password = process.env.SEED_ADMIN_PASSWORD || "Knuckles@1031"
+
+  const exists = await User.findOne({ username })
+  if (exists) {
+    console.log("ℹ️  Admin user already exists — skipping seed")
+    return
+  }
+
+  await User.create({ username, password, role: "admin" })
+  console.log(`✅ Admin user "${username}" created`)
+}
+
 // ── Connect MongoDB asynchronously (routes gate on mongoReady flag) ───────────
 if (process.env.MONGO_URI) {
   mongoose.connect(process.env.MONGO_URI, {
@@ -85,9 +101,10 @@ if (process.env.MONGO_URI) {
     serverSelectionTimeoutMS: 5000,
     socketTimeoutMS:          45000,
   })
-    .then(() => {
+    .then(async () => {
       mongoReady = true
       console.log("✅ MongoDB connected")
+      await seedAdmin()
     })
     .catch(err => {
       console.error("❌ MongoDB connection failed:", err.message)
